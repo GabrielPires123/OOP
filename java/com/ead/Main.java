@@ -1,54 +1,62 @@
 package com.ead;
 
+import Entities.Contribuinte;
+import Entities.PessoaFisica;
+import Entities.PessoaJuridica;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import Entities.Shape;
-import Entities.Rectangle;
-import Entities.Circle;
-import EntitiesEnum.Color;
-
-
-public class Main
-{
-    public static void main(String[] args) throws ParseException
-    {
+public class Main {
+    public static void main(String[] args) throws ParseException {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        List<Shape> list = new ArrayList<>();
+        List<Contribuinte> contribuinteList = new ArrayList<>();
+        System.out.println("Quantidade de contribuintes: ");
+        int quant = sc.nextInt();
+        sc.nextLine();
 
-        System.out.print("Enter the number of shapes: ");
-        int n = sc.nextInt();
+        for (int i = 1; i <= quant; i++) {
+            System.out.printf("Contribuinte #%d:\n", i);
+            System.out.println("Digite o Nome: ");
+            String nome = sc.nextLine();
+            System.out.println("Digite a renda anual: ");
+            Double rendaAnual = sc.nextDouble();
+            sc.nextLine();
 
-        for (int i=1; i<=n; i++) {
-            System.out.println("Shape #" + i + " data:");
-            System.out.print("Rectangle or Circle (r/c)? ");
-            char ch = sc.next().charAt(0);
-            System.out.print("Color (WHITE,BLACK OR BLUE): ");
-            Color color = Color.valueOf(sc.next());
-            if (ch == 'r') {
-                System.out.print("Width: ");
-                double width = sc.nextDouble();
-                System.out.print("Height: ");
-                double height = sc.nextDouble();
-                list.add(new Rectangle(color, width, height));
-            }
-            else {
-                System.out.print("Radius: ");
-                double radius = sc.nextDouble();
-                list.add(new Circle(color, radius));
+            System.out.println("Tipo de contribuinte (F - Pessoa Física / J - Pessoa Jurídica):");
+            char ch = sc.next().toUpperCase().charAt(0);
+            sc.nextLine();
+
+            if (ch == 'F') {
+                System.out.println("Digite a quantia gasta em planos de saúde: ");
+                double saude = sc.nextDouble();
+                sc.nextLine();
+                contribuinteList.add(new PessoaFisica(rendaAnual, nome, saude));
+            } else if (ch == 'J') {
+                System.out.println("Digite a quantidade de funcionários em sua empresa: ");
+                int emp = sc.nextInt();
+                sc.nextLine();
+                contribuinteList.add(new PessoaJuridica(rendaAnual, nome, emp));
+            } else {
+                System.out.println("Tipo inválido. Ignorando contribuinte.");
             }
         }
 
-        System.out.println();
-        System.out.println("SHAPE AREAS:");
-        for (Shape shape : list) {
-            System.out.println(String.format("%.2f", shape.area()));
+        System.out.println("\nIMPOSTOS PAGOS:");
+        double totalImpostos = 0.0;
+
+        for (Contribuinte x : contribuinteList) {
+            double imposto = x.rendaTotal();
+            totalImpostos += imposto;
+            System.out.printf("%s: R$ %.2f%n", x.getNome(), imposto);
         }
+
+        System.out.printf("%nTOTAL DE IMPOSTOS: R$ %.2f%n", totalImpostos);
 
         sc.close();
     }
