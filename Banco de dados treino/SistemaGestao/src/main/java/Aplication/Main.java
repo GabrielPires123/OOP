@@ -6,6 +6,7 @@ import Model.Entities.Department;
 import Model.Entities.Seller;
 
 import java.util.Date;
+import java.util.List;
 
 public class Main
 {
@@ -14,16 +15,33 @@ public class Main
 
         SellerDAO sellerDAO = DaoFactory.creaSellerDAO();
 
+        System.out.println("=== TEST 1: seller findById =====");
         Seller seller = sellerDAO.findById(3);
+        System.out.println(seller);
 
-        System.out.println(sellerDAO.findAll());
+        System.out.println("\n=== TEST 2: seller findByDepartment =====");
+        Department department = new Department(2, null);
+        List<Seller> list = sellerDAO.findByDepartment(department);
+        for (Seller obj : list) {
+            System.out.println(obj);
+        }
 
-        Department dept = new Department(4, "Books");
-        Seller newSeller = new Seller(4000.0, new Date(), "Gabriel@gmailc.", null, "Gabriel",dept);
-
-
+        System.out.println("\n=== TEST 3: seller findAll =====");
+        list = sellerDAO.findAll();
+        for (Seller obj : list) {
+            System.out.println(obj);
+        }
+        /*Seller newSeller = new Seller(4000.0, new Date(), "Gabriel@gmailc.", null, "Gabriel",department);
         sellerDAO.insert(newSeller);
-        System.out.println("Inserted! new id =" + newSeller.getId());
+        System.out.println("Inserted! new id =" + newSeller.getId());*/
+
+        System.out.println("\n=== TEST 4: UPGRADE =====");
+        seller = sellerDAO.findById(1);
+        seller.setName("Pato da silva");
+        sellerDAO.upDate(seller);
+        System.out.println("OK!");
+
+
 
     }
 }
