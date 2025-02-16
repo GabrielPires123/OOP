@@ -7,11 +7,14 @@ import Model.Entities.Seller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main
 {
     public static void main(String[] args)
     {
+
+        Scanner sc = new Scanner(System.in);
 
         SellerDAO sellerDAO = DaoFactory.creaSellerDAO();
 
@@ -39,8 +42,13 @@ public class Main
         seller = sellerDAO.findById(1);
         seller.setName("Pato da silva");
         sellerDAO.upDate(seller);
-        System.out.println("OK!");
+        System.out.println("UPGRADE OK!");
 
+        System.out.println("\n=== TEST 5: DELETE =====");
+        int id = sc.nextInt();
+        sellerDAO.deleteById(id);
+        System.out.println("DELETE OK!");
+        sc.close();
 
 
     }

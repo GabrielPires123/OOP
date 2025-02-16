@@ -3,8 +3,7 @@ package Modal.dao.impl;
 import Modal.dao.SellerDAO;
 import Model.Entities.Department;
 import Model.Entities.Seller;
-import com.mysql.cj.xdevapi.PreparableStatement;
-import com.mysql.cj.xdevapi.Result;
+
 import db.DB;
 
 
@@ -93,6 +92,18 @@ public class SellerDaoJDBC implements SellerDAO {
 
     @Override
     public void deleteById(Integer id) {
+
+        PreparedStatement st=null;
+        try {
+
+            st = conn.prepareStatement("Delete from seller where id=?");
+            st.setInt(1,id);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
